@@ -8,9 +8,9 @@ app.use(cors());
 const data = [];
 let count = 1;
 
-getNumbersList();
+extractNumbers();
 
-async function getNumbersList() {
+async function extractNumbers() {
     let incomingData = true;
 
     while(incomingData) {
@@ -23,10 +23,30 @@ async function getNumbersList() {
                 data.push(...incomingData);
                 count++;
             } else {
-                incomingData = false;
+                transformNumbers(data);
+                break;
             }
         } catch (e) {
             console.log(e.message);
+        }
+    }
+}
+
+function transformNumbers(data) {
+    for(let i = 0; i < data.length-1; i++) {
+        let j = i;
+        while(data[j] > data[j+1]) {
+            let temp = data[j+1];
+            data[j+1] = data[j];
+            data[j] = temp;
+            j++;
+        }
+        j = i;
+        while(data[j] < data[j-1]) {
+            let temp = data[j-1];
+            data[j-1] = data[j];
+            data[j] = temp;
+            j--;
         }
     }
 }
