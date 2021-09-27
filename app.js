@@ -6,16 +6,27 @@ const app = express();
 app.use(cors());
 
 const data = [];
+let count = 1;
 
-const request = axios.get("http://challenge.dienekes.com.br/api/numbers?page=1");
+getNumbersList();
 
-request.then(response => {
-    data.push(response.data);
-});
+async function getNumbersList() {
+    let incomingData = true;
 
-request.catch(error => {
-    console.log("Something went wrong.");
-});
+    while(incomingData) {
+        try {
+            const request = await axios.get(`http://challenge.dienekes.com.br/api/numbers?page=${count}`);
+    
+            incomingData = request.data.numbers;
+
+            if(incomingData) data.push(...incomingData)
+            
+            count++;
+        } catch (e) {
+            console.log(e.message);
+        }
+    }
+}
 
 app.get("/", (req, res) => {
     res.send("Hello");
