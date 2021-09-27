@@ -15,11 +15,12 @@ async function extractNumbers() {
 
     while(incomingData) {
         try {
+            console.log(count);
             const request = await axios.get(`http://challenge.dienekes.com.br/api/numbers?page=${count}`);
     
             incomingData = request.data.numbers;
 
-            if(incomingData) {
+            if(incomingData.length) {
                 data.push(...incomingData);
                 count++;
             } else {
@@ -33,7 +34,7 @@ async function extractNumbers() {
 }
 
 function transformNumbers(data) {
-    for(let i = 0; i < data.length-1; i++) {
+    for(let i = 0; i < data.length; i++) {
         let j = i;
         while(data[j] > data[j+1]) {
             let temp = data[j+1];
@@ -52,7 +53,7 @@ function transformNumbers(data) {
 }
 
 app.get("/", (req, res) => {
-    res.send("Hello");
+    res.send(data);
 });
 
 app.listen(4000);
