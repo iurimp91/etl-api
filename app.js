@@ -19,9 +19,12 @@ async function getNumbersList() {
     
             incomingData = request.data.numbers;
 
-            if(incomingData) data.push(...incomingData)
-            
-            count++;
+            if(incomingData) {
+                data.push(...incomingData);
+                count++;
+            } else {
+                incomingData = false;
+            }
         } catch (e) {
             console.log(e.message);
         }
