@@ -1,3 +1,4 @@
+import "./setup.js";
 import express from "express";
 import cors from "cors";
 import axios from "axios";
@@ -15,7 +16,6 @@ async function extractNumbers() {
 
     while(incomingData) {
         try {
-            console.log(count);
             const request = await axios.get(`http://challenge.dienekes.com.br/api/numbers?page=${count}`);
     
             incomingData = request.data.numbers;
@@ -23,12 +23,13 @@ async function extractNumbers() {
             if(incomingData.length) {
                 data.push(...incomingData);
                 count++;
+                transformNumbers(data);
             } else {
                 transformNumbers(data);
                 break;
             }
         } catch (e) {
-            console.log(e.message);
+            console.log("Request failed. Trying again.");
         }
     }
 }
@@ -56,4 +57,4 @@ app.get("/", (req, res) => {
     res.send(data);
 });
 
-app.listen(4000);
+export default app;
