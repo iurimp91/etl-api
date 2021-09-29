@@ -1,4 +1,4 @@
-import "./setup.js";
+import "./setup";
 import express from "express";
 import cors from "cors";
 import axios from "axios";
@@ -53,7 +53,8 @@ function transformNumbers(data: number[]) {
     }
 }
 
-app.get("/", (req, res) => {
+app.get("/numbers", (req, res) => {
+    extractNumbers();
     res.send(data);
 });
 
